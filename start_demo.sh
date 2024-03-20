@@ -5,7 +5,7 @@ echo 'Launching PERCIV demo'
 # Move to the source directory
 cd /home/perciv/khush/ros2_ws/src/
 
-# Source ROS
+# Source ROS and PERCIV workspace
 source /opt/ros/humble/setup.bash
 source /home/perciv/khush/ros2_ws/install/setup.bash
 
@@ -29,8 +29,8 @@ tmux send-keys -t PERCIV_DEMO:0.1 'python3 safety_checkig/collision_detector.py'
 # Start trajectory predicition node
 tmux send-keys -t PERCIV_DEMO:0.2 'ros2 run trajectory_prediction trajectory_prediction' C-m
 
-# # Start rviz
-# tmux send-keys -t PERCIV_DEMO:0.3 'ros2 run rviz2 rviz2' C-m
+# Start rviz
+tmux send-keys -t PERCIV_DEMO:0.3 'ros2 run rviz2 rviz2' C-m
 
 # Attach to the tmux session
 tmux attach -t PERCIV_DEMO
