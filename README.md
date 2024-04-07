@@ -1,4 +1,8 @@
 # Utils
+## TODO:
+- [ ] Add requirements.txt
+- [ ] Complete setup_computer.sh
+
 ## Instructions
 - Install evtest with
 `sudo apt-get install evtest`
