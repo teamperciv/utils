@@ -41,12 +41,12 @@ export ROS_DOMAIN_ID=$PERCIV_ROS_DOMAIN_ID
 
 # Start a new tmux session and created required splits
 tmux new-session -d -s PERCIV_DEMO
+tmux rename-window -t PERCIV_DEMO "scripts"
 
 commands=(
     "python3 steering/ros2_controller.py"
     "python3 safety_checking/collision_detector.py"
     "ros2 run trajectory_prediction trajectory_prediction"
-    "ros2 run rviz2 rviz2"
     "cd overlay_generator/src && python detection_visualizer.py"
     "cd yolo_detection && python test_pose.py"
 )
@@ -55,11 +55,13 @@ pane_index=0
 for command in "${commands[@]}"; do
     tmux send-keys -t PERCIV_DEMO:0.$pane_index "$setup_perciv_shell && $command" C-m
     tmux split-window -v
+    tmux select-layout -t PERCIV_DEMO tiled
     ((pane_index++))
 done
 
-# Make things beautiful
-tmux select-layout -t PERCIV_DEMO tiled
+# Run rviz in another pane since it doesn't need to be actively monitored
+tmux new-window -t PERCIV_DEMO -n "RVIZ"
+tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2" C-m
 
 # Attach to the tmux session
-tmux attach -t PERCIV_DEMO
+tmux attach-session -t PERCIV_DEMO:0
