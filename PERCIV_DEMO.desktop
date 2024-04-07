@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=/home/shahram95/perciv_ws/src/utils/start_demo.sh
+Name=PERCIV DEMO
+Comment=Launches PERCIV Demo
+Icon=/home/shahram95/perciv_ws/src/utils/logo.jpg
