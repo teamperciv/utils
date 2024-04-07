@@ -2,7 +2,8 @@
 
 echo 'Launching PERCIV demo'
 
-USER_HOME=$(eval echo "~$USER")
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+source "$SCRIPT_DIR/env_vars.sh"
 
 # Detect ROS version
 if [ -d "/opt/ros/foxy" ]; then
@@ -14,10 +15,7 @@ else
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
-PERCIV_VENV_SOURCE_PATH="$USER_HOME/perciv_venv/bin/activate"
-PERCIV_WS_PATH="$USER_HOME/perciv_ws"
 PERCIV_ROS_SOURCE_PATH="/opt/ros/$perciv_ros_version/setup.bash"
-PERCIV_ROS_DOMAIN_ID=100
 
 # Sanity checks
 if [ ! -f $PERCIV_VENV_SOURCE_PATH ]; then
