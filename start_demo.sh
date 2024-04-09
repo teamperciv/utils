@@ -61,5 +61,7 @@ done
 tmux new-window -t PERCIV_DEMO -n "RVIZ"
 tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2" C-m
 
+bash "$SCRIPT_DIR/start_bev.sh"
+
 # Attach to the tmux session
 tmux attach-session -t PERCIV_DEMO:0
