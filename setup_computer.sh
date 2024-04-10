@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Function to display the confirmation prompt
+confirm_prompt() {
+    read -r -p "Are you sure you want to run this script? (y/n): " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            return 0  # Return success if user confirms
+            ;;
+        *)
+            echo "Setup cancelled."
+            exit 1     # Exit with error status if user declines
+            ;;
+    esac
+}
+
+# Ask for confirmation to prevent accidental setups
+confirm_prompt
+
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 source "$SCRIPT_DIR/env_vars.sh"
 
