@@ -27,6 +27,11 @@ else
     exit 1
 fi
 
+# Install some required apt packages
+sudo apt-get install $PERCIV_PYTHON_VERSION
+sudo apt-get install $PERCIV_PYTHON_VERSION-venv
+sudo apt-get install $PERCIV_PYTHON_VERSION-dev
+
 # Create a virtual environment with the specified Python version
 $PERCIV_PYTHON_VERSION -m venv "$PERCIV_VENV_PATH"
 

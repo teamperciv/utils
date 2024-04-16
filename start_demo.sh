@@ -31,7 +31,7 @@ fi
 setup_perciv_shell="conda deactivate && "
 setup_perciv_shell+="source $PERCIV_VENV_SOURCE_PATH && "
 setup_perciv_shell+="source $PERCIV_ROS_SOURCE_PATH && "
-setup_perciv_shell+="source $PERCIV_WS_PATH/install/setup.bash && "
+setup_perciv_shell+="source $PERCIV_WS_PATH/install/local_setup.bash && "
 setup_perciv_shell+="cd $PERCIV_WS_PATH/src"
 
 # Set up environment variables
@@ -59,7 +59,7 @@ done
 
 # Run rviz in another pane since it doesn't need to be actively monitored
 tmux new-window -t PERCIV_DEMO -n "RVIZ"
-tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2" C-m
+tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2 -d utils/perciv_rviz.rviz" C-m
 
 bash "$SCRIPT_DIR/start_bev.sh"
 
