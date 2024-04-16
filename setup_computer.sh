@@ -52,6 +52,8 @@ else
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
+sudo apt-get install ros-$perciv_ros_version-vision-msgs
+
 # Make perciv workspace
 mkdir -p "$PERCIV_WS_PATH/src"
 cd $PERCIV_WS_PATH

@@ -16,7 +16,7 @@ else
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
-allow_ros1="source /home/teamc24/ros_noetic_ws/install_isolated/setup.bash"
+allow_ros1="source /opt/ros/noetic/setup.bash"
 allow_ros2="conda deactivate && source /opt/ros/$perciv_ros_version/setup.bash"
 source_perciv_ws="source $PERCIV_WS_PATH/install/local_setup.bash"
 

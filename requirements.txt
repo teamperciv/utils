@@ -21,3 +21,5 @@ tdqm
 scipy
 ultralytics
 rospkg
+wheel
+colcon-common-extensions
