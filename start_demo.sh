@@ -57,9 +57,9 @@ for command in "${commands[@]}"; do
     ((pane_index++))
 done
 
-# Run rviz in another pane since it doesn't need to be actively monitored
-tmux new-window -t PERCIV_DEMO -n "RVIZ"
-tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2 -d utils/perciv_rviz.rviz" C-m
+# # Run rviz in another pane since it doesn't need to be actively monitored
+# tmux new-window -t PERCIV_DEMO -n "RVIZ"
+# tmux send-keys -t PERCIV_DEMO:1 "$setup_perciv_shell && ros2 run rviz2 rviz2 -d utils/perciv_rviz.rviz" C-m
 
 bash "$SCRIPT_DIR/start_bev.sh"
 
