@@ -11,3 +11,4 @@
 
 - Wohoo: run `bash start_demo.sh` to launch the demo!
 - Or: Modify the application with your username and put in ~/.local/share/applications/PERCIV_DEMO.desktop
+- Shahram hack to solve all life problems: rm ${CONDA_PREFIX}/lib/libffi.7.so ${CONDA_PREFIX}/lib/libffi.so.7
