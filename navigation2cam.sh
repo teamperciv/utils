@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 
 echo 'Launching PERCIV demo'
 
@@ -86,24 +86,33 @@ perception_commands=(
 
 pane_index=0
 for command in "${bg_commands[@]}"; do
-    tmux send-keys -t $PERCIV_TMUX_NAME:bg_commands.$pane_index "$setup_perciv_shell && $command" C-m
-    tmux split-window -t $PERCIV_TMUX_NAME:bg_commands -v
+    if (( pane_index > 0 )); then
+        tmux split-window -t $PERCIV_TMUX_NAME:bg_commands -v
+    fi
+    tmux send-keys -t $PERCIV_TMUX_NAME:bg_commands.$pane_index "$setup_perciv_shell" C-m
+    tmux send-keys -t $PERCIV_TMUX_NAME:bg_commands.$pane_index "$command" C-m
     tmux select-layout -t $PERCIV_TMUX_NAME:bg_commands tiled
     ((pane_index++))
 done
 
 pane_index=0
 for command in "${pnc_commands[@]}"; do
-    tmux send-keys -t $PERCIV_TMUX_NAME:pnc_commands.$pane_index "$setup_perciv_shell && $command" C-m
-    tmux split-window -t $PERCIV_TMUX_NAME:pnc_commands -v
+    if (( pane_index > 0 )); then
+        tmux split-window -t $PERCIV_TMUX_NAME:pnc_commands -v
+    fi
+    tmux send-keys -t $PERCIV_TMUX_NAME:pnc_commands.$pane_index "$setup_perciv_shell" C-m
+    tmux send-keys -t $PERCIV_TMUX_NAME:pnc_commands.$pane_index "$command" C-m
     tmux select-layout -t $PERCIV_TMUX_NAME:pnc_commands tiled
     ((pane_index++))
 done
 
 pane_index=0
 for command in "${perception_commands[@]}"; do
-    tmux send-keys -t $PERCIV_TMUX_NAME:perception_commands.$pane_index "$setup_perciv_shell && $command" C-m
-    tmux split-window -t $PERCIV_TMUX_NAME:perception_commands -v
+    if (( pane_index > 0 )); then
+        tmux split-window -t $PERCIV_TMUX_NAME:perception_commands -v
+    fi
+    tmux send-keys -t $PERCIV_TMUX_NAME:perception_commands.$pane_index "$setup_perciv_shell" C-m
+    tmux send-keys -t $PERCIV_TMUX_NAME:perception_commands.$pane_index "$command" C-m
     tmux select-layout -t $PERCIV_TMUX_NAME:perception_commands tiled
     ((pane_index++))
 done
