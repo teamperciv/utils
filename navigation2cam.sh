@@ -6,7 +6,6 @@ echo 'Launching PERCIV demo'
 
 
 PERCIV_TMUX_NAME="PERCIV_AUTONOMY_DEMO"
-
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Set up environment variables
@@ -47,9 +46,6 @@ setup_perciv_shell+="export CYCLONEDDS_URI='<CycloneDDS><Domain><General><Networ
 
 # Start a new tmux session and created required splits
 tmux new-session -d -s $PERCIV_TMUX_NAME
-tmux rename-window -t $PERCIV_TMUX_NAME "bg_commands"
-tmux new-window -t $PERCIV_TMUX_NAME -n "pnc_commands"
-tmux new-window -t $PERCIV_TMUX_NAME -n "perception_commands"
 
 # commands that don't require monitoring
 bg_commands=(
@@ -59,7 +55,7 @@ bg_commands=(
     "rviz2"
     "ros2 launch car_sim_gazebo world.launch.py"
 
-    "echo $HOME"
+    "echo testing terminal"
 )
 
 pnc_commands=(
@@ -67,7 +63,7 @@ pnc_commands=(
     "python3 safety_checking/collision_detector.py"
     "cd /home/brain/perciv_ws/src/aruco_pose_estimation/scripts && python3 pose_converter.py"
 
-    "echo $HOME"
+    "echo testing terminal"
 )
 
 perception_commands=(
@@ -78,50 +74,35 @@ perception_commands=(
     "cd ~/Desktop/FVD_perception_pipeline && python3 3d_deproject.py"
     "cd ~/Desktop/Detector_FVD/detection && python3 test_pose.py"
 
-    "echo $HOME"
+    "echo testing terminal"
 )
 
 # "ros2 service call /reset_odom std_srvs/srv/Empty '{}'"
 
+# Function to create and populate tmux window
+create_tmux_window() {
+    local session=$1
+    local window_name=$2
+    shift 2
+    local commands=("$@")
 
-pane_index=0
-for command in "${bg_commands[@]}"; do
-    if (( pane_index > 0 )); then
-        tmux split-window -t $PERCIV_TMUX_NAME:bg_commands -v
-    fi
-    tmux send-keys -t $PERCIV_TMUX_NAME:bg_commands.$pane_index "$setup_perciv_shell" C-m
-    tmux send-keys -t $PERCIV_TMUX_NAME:bg_commands.$pane_index "$command" C-m
-    tmux select-layout -t $PERCIV_TMUX_NAME:bg_commands tiled
-    ((pane_index++))
-done
+    tmux new-window -t "$session" -n "$window_name"
+    local pane_index=0
 
-pane_index=0
-for command in "${pnc_commands[@]}"; do
-    if (( pane_index > 0 )); then
-        tmux split-window -t $PERCIV_TMUX_NAME:pnc_commands -v
-    fi
-    tmux send-keys -t $PERCIV_TMUX_NAME:pnc_commands.$pane_index "$setup_perciv_shell" C-m
-    tmux send-keys -t $PERCIV_TMUX_NAME:pnc_commands.$pane_index "$command" C-m
-    tmux select-layout -t $PERCIV_TMUX_NAME:pnc_commands tiled
-    ((pane_index++))
-done
+    for command in "${commands[@]}"; do
+        (( pane_index > 0 )) && tmux split-window -t "$session:$window_name" -v
+        tmux send-keys -t "$session:$window_name.$pane_index" "$setup_perciv_shell" C-m
+        tmux send-keys -t "$session:$window_name.$pane_index" "$command" C-m
+        tmux select-layout -t "$session:$window_name" tiled
+        ((pane_index++))
+    done
+}
 
-pane_index=0
-for command in "${perception_commands[@]}"; do
-    if (( pane_index > 0 )); then
-        tmux split-window -t $PERCIV_TMUX_NAME:perception_commands -v
-    fi
-    tmux send-keys -t $PERCIV_TMUX_NAME:perception_commands.$pane_index "$setup_perciv_shell" C-m
-    tmux send-keys -t $PERCIV_TMUX_NAME:perception_commands.$pane_index "$command" C-m
-    tmux select-layout -t $PERCIV_TMUX_NAME:perception_commands tiled
-    ((pane_index++))
-done
-
-# # Run rviz in another pane since it doesn't need to be actively monitored
-# tmux new-window -t $PERCIV_TMUX_NAME -n "RVIZ"
-# tmux send-keys -t $PERCIV_TMUX_NAME:1 "$setup_perciv_shell && ros2 run rviz2 rviz2 -d utils/perciv_rviz.rviz" C-m
-
-# bash "$SCRIPT_DIR/start_bev.sh"
+# Initialize tmux session and create windows
+tmux new-session -d -s "$PERCIV_TMUX_NAME" -n "bg_commands"
+create_tmux_window "$PERCIV_TMUX_NAME" "bg_commands" "${bg_commands[@]}"
+create_tmux_window "$PERCIV_TMUX_NAME" "pnc_commands" "${pnc_commands[@]}"
+create_tmux_window "$PERCIV_TMUX_NAME" "perception_commands" "${perception_commands[@]}"
 
 # Attach to the tmux session
-tmux attach-session -t $PERCIV_TMUX_NAME:pnc_commands
+tmux attach-session -t "$PERCIV_TMUX_NAME:pnc_commands"
