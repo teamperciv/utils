@@ -42,7 +42,7 @@ setup_perciv_shell+="cd $PERCIV_WS_PATH/src && "
 setup_perciv_shell+="source $PERCIV_NAV_WS_PATH/install/local_setup.bash && "
 setup_perciv_shell+="export ROS_DOMAIN_ID=$PERCIV_ROS_DOMAIN_ID && "
 setup_perciv_shell+="export TURTLEBOT3_MODEL=waffle && "
-setup_perciv_shell+="export CYCLONEDDS_URI='<CycloneDDS><Domain><General><NetworkInterfaceAddress>enp3s0</NetworkInterfaceAddress></General></Domain></CycloneDDS>'"
+setup_perciv_shell+="export CYCLONEDDS_URI='<CycloneDDS><Domain><General><NetworkInterfaceAddress>en01</NetworkInterfaceAddress></General></Domain></CycloneDDS>'"
 
 # Start a new tmux session and created required splits
 tmux new-session -d -s $PERCIV_TMUX_NAME
@@ -51,6 +51,8 @@ tmux new-session -d -s $PERCIV_TMUX_NAME
 bg_commands=(
     "ros2 launch realsense2_camera rs_multi_camera_launch.py serial_no1:=\'944622073415\' serial_no2:=\'819112073090\' rgb_camera.profile1:=1280,720,30 rgb_camera.profile2:=1280,720,30 depth_module.profile1:=1280,720,30 depth_module.profile2:=1280,720,30 pointcloud.enable1:=false pointcloud.enable2:=false align_depth.enable1:=true align_depth.enable2:=true decimation_filter.enable1:=true decimation_filter.enable2:=true spatial_filter.enable1:=true spatial_filter.enable2:=true temporal_filter.enable1:=true temporal_filter.enable2:=true json_file_path1:=/home/brain/Desktop/MidDensityPreset.json json_file_path2:=/home/brain/Desktop/MidDensityPreset.json enable_infra11:=true enable_infra21:=true enable_infra12:=true enable_infra22:=true camera_name1:=camera1 camera_name2:=camera2"
     "cd /home/brain/perciv_ws/src/aruco_pose_estimation/scripts && python3 pose_converter.py"
+
+    "cd ~/Desktop/FVD_perception_pipeline && streamlit run interface_v5.py"
 
     "rviz2"
     "ros2 launch car_sim_gazebo world.launch.py"
@@ -63,6 +65,7 @@ pnc_commands=(
     "python3 safety_checking/collision_detector.py"
     "cd /home/brain/perciv_ws/src/aruco_pose_estimation/scripts && python3 pose_converter.py"
 
+    "ros2 run trajectory_prediction trajectory_prediction"
     "echo testing terminal"
 )
 
