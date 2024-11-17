@@ -2,12 +2,14 @@
 
 # set -e
 
+pkill -f rosbridge_websocket
+sleep 2
+
 PERCIV_TMUX_NAME="PERCIV_AUTONOMY_DEMO"
 
 # Don't double-launch
 if tmux has-session -t "$PERCIV_TMUX_NAME" 2>/dev/null; then
     echo "The TMUX session '$PERCIV_TMUX_NAME' exists."
-    sleep 2
     exit 1
 fi
 
@@ -84,6 +86,8 @@ perception_commands=(
     "cd ~/Desktop/FVD_perception_pipeline && python3 apriltag_node.py"
     "cd ~/Desktop/FVD_perception_pipeline && python3 3d_deproject.py"
 
+    # "cd yolo_detection && python3 parking_success.py"
+
     "echo testing terminal"
 )
 
@@ -109,7 +113,6 @@ create_tmux_window() {
 }
 
 # Initialize tmux session and create windows
-tmux new-session -d -s "$PERCIV_TMUX_NAME" -n "bg_commands"
 create_tmux_window "$PERCIV_TMUX_NAME" "perception_commands" "${perception_commands[@]}"
 
 # Hack to avoid old TF data errors
